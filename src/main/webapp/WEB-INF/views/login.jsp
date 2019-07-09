@@ -6,10 +6,10 @@
 	<title>Home</title>
 </head>
 <body>
-	<form method="get">
-		<input type="text" name="id">
+	<form method="post">
+		<input type="text" name="id" placeholder="아이디">
+		<input type="text" name="pw" placeholder="비밀번호">
 		<button>전송</button>
 	</form>
-	${email}
 </body>
 </html>
