@@ -38,4 +38,5 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		else
 			return "redirect:/login";
 	}
+	
 }
