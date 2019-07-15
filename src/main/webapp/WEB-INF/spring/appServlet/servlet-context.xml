@@ -23,6 +23,32 @@
 	
 	<context:component-scan base-package="kr.green.test" />
 	
+	<beans:bean id="loginInterceptor" 
+		class="kr.green.test.interceptor.LoginInterceptor"></beans:bean>
+	<beans:bean id="authInterceptor" 
+		class="kr.green.test.interceptor.AuthInterceptor"></beans:bean>
+	<beans:bean id="unauthInterceptor" 
+		class="kr.green.test.interceptor.UnauthInterceptor"></beans:bean>
 	
+	<interceptors>
+	    <interceptor>
+	        <mapping path="/login"/>
+	        <beans:ref bean="loginInterceptor"/>
+	    </interceptor>
+	</interceptors>
+	<interceptors>
+		<interceptor>
+	        <mapping path="/"/>
+	        <mapping path="/login"/>
+	        <mapping path="/signup"/>
+	        <beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>
+	<interceptors>
+		<interceptor>
+	        <mapping path="/board/*"/>
+	        <beans:ref bean="unauthInterceptor"/>
+		</interceptor>
+	</interceptors>
 	
 </beans:beans>

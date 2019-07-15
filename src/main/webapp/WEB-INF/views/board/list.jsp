@@ -4,11 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<meta charset="UTF-8">
 	<title>게시판</title>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/common/navi.jsp"></jsp:include>
 	<table>
 		<tr>
 			<th>번호</th>

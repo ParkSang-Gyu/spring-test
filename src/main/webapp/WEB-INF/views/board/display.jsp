@@ -4,10 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/common/navi.jsp"></jsp:include>
 	${board.title}<br>
 	${board.writer}<br>
 	${board.registered}<br>

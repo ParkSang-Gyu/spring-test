@@ -4,6 +4,6 @@ import kr.green.test.vo.MemberVO;
 
 public interface MemberService {
 
-	boolean login(MemberVO mVo);
+	MemberVO login(MemberVO mVo);
 
 }

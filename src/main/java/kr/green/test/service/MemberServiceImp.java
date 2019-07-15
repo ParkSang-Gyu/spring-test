@@ -13,12 +13,12 @@ public class MemberServiceImp implements MemberService{
 	MemberDAO memberDao;
 
 	@Override
-	public boolean login(MemberVO mVo) {
+	public MemberVO login(MemberVO mVo) {
 		MemberVO mVo1 = memberDao.getMember(mVo.getId());
 		if(mVo1 == null)
-			return false;
+			return null;
 		if(mVo1.getPw().equals(mVo.getPw()))
-			return true;
-		return false;
+			return mVo1;
+		return null;
 	}
 }

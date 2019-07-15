@@ -10,6 +10,6 @@
 		<input type="text" name="id">
 		<button>전송</button>
 	</form>
-	${email}
+	<h1>${user}</h1> 
 </body>
 </html>
