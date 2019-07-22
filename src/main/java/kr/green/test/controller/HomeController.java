@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	@Autowired
 	MemberService memberService;
+	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -44,11 +46,40 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		else
 			return "redirect:/login";
 	}
+	@RequestMapping(value = "/member/modify", method = RequestMethod.GET)
+	public String memberModifyGet(Model model) {
+		logger.info("회원정보수정페이지 실행");
+		
+		return "member/modify";
+	}
+	@RequestMapping(value = "/member/modify", method = RequestMethod.POST)
+	public String memberModifyPOST(MemberVO mVo,String oldPw) {
+		logger.info("회원정보수정 진행중");
+		// 회원가입이 진행되어야 함
+		if (memberService.memberModify(mVo,oldPw))
+			return "redirect:/";
+		else
+			return "redirect:/member/modify";
+	}
 	@RequestMapping(value = "/logout")
 	public String logout(HttpServletRequest request) {
-		logger.info("로그아웃 실행");
 		HttpSession session = request.getSession();
 		session.removeAttribute("user");
 		return "redirect:/";
+	}
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public String signupGet(Model model) {
+		logger.info("회원가입페이지 실행");
+		
+		return "signup";
+	}
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	public String signupPOST(MemberVO mVo) {
+		logger.info("회원가입 진행중");
+		// 회원가입이 진행되어야 함
+		if (memberService.signup(mVo))
+			return "redirect:/";
+		else
+			return "redirect:/signup";
 	}
 }

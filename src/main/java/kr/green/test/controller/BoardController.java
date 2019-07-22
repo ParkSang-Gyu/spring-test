@@ -2,6 +2,8 @@ package kr.green.test.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import kr.green.test.dao.BoardDAO;
 import kr.green.test.service.BoardService;
 import kr.green.test.vo.BoardVO;
+import kr.green.test.vo.MemberVO;
 
 @Controller
 public class BoardController {
@@ -37,5 +39,49 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		BoardVO bVo = boardService.getBoard(num);
 		model.addAttribute("board",bVo);
 		return "board/display";
+	}
+	@RequestMapping(value = "/board/modify", method = RequestMethod.GET)
+	public String boardModifyGet(Model model,Integer num,HttpServletRequest request) {
+		BoardVO bVo = boardService.getBoard(num);
+		model.addAttribute("board",bVo);
+		MemberVO user = (MemberVO)request.getSession().getAttribute("user");
+		if(!user.getId().equals(bVo.getWriter()))
+			return "board/list";
+		return "board/modify"; 
+	}
+//	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+//	public String boardModifyPost(BoardVO bVo, HttpServletRequest request) {
+//		HttpSession s = request.getSession();
+//		MemberVO user = (MemberVO)s.getAttribute("user");
+//		// 내 코드
+//		if (boardService.boardModify(bVo))
+//			return "redirect:/board/display";
+//		else
+//			return "redirect:board/modify";
+//	}
+	@RequestMapping(value = "/board/modify", method = RequestMethod.POST)
+	public String boardModifyPost(Model model,BoardVO bVo,HttpServletRequest request) {
+		boardService.updateBoard(bVo,request);
+		model.addAttribute("num",bVo.getNum());
+		return "redirect:/board/modify";
+	}
+	@RequestMapping(value = "/board/register", method = RequestMethod.GET)
+	public String boardModifyGet(Model model) {
+		
+		return "board/register";
+	}
+	@RequestMapping(value = "/board/register", method = RequestMethod.POST)
+	public String boardRegisterPost(BoardVO bVo) {
+		if(boardService.boardRegister(bVo))
+			return "redirect:/board/list";
+		else
+			return "redirect:/board/register";
+	}
+	@RequestMapping(value="delete", method=RequestMethod.GET)
+	public String boardDeleteGet(Integer num,HttpServletRequest r) {
+		if(boardService.isWriter(num,r)) {
+			boardService.deleteBoard(num);
+		}
+		return "redirect:/board/list";
 	}
 }

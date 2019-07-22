@@ -10,6 +10,12 @@ public interface BoardDAO {
 
 	BoardVO getBoard(Integer num);
 
-	
+	void updateViews(Integer num);
+
+	void updateBoard(BoardVO tmp);
+
+	void boardRegister(BoardVO bVo);
+
+	void deleteBoard(Integer num);
 	
 }
