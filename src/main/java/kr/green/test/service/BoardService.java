@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import kr.green.test.pagination.Criteria;
 import kr.green.test.vo.BoardVO;
 
 public interface BoardService {
 
-	ArrayList<BoardVO> getBoardList();
+	ArrayList<BoardVO> getBoardList(Criteria cri);
 
 	BoardVO getBoard(Integer num);
 
@@ -23,5 +24,7 @@ public interface BoardService {
 	void deleteBoard(Integer num);
 
 	boolean isWriter(Integer num, HttpServletRequest r);
+
+	int getTotalCount(Criteria cri);
 	
 }

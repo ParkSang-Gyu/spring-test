@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import kr.green.test.pagination.Criteria;
+import kr.green.test.pagination.PageMaker;
 import kr.green.test.service.BoardService;
 import kr.green.test.vo.BoardVO;
 import kr.green.test.vo.MemberVO;
@@ -25,11 +27,18 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 	BoardService boardService;
 	// @RequestMapping(value="/board/list" 에서 value="/board/list 는 URI주소를 이렇게 하겠다는 의미
 	@RequestMapping(value="/board/list", method = RequestMethod.GET)
-	public String boardListGET(Model model) {
+	public String boardListGET(Model model,Criteria cri) {
 		logger.info("게시판 페이지 실행");
 		// 일반 객체에는 게시글 한개의 정보만 담을 수 있기 때문에 전체를 가져오기 위해서 ArrayList에 담는다
-		ArrayList<BoardVO> boardList = boardService.getBoardList();
+		ArrayList<BoardVO> boardList = boardService.getBoardList(cri);
+		PageMaker pm = new PageMaker();
+		pm.setCriteria(cri);
+		pm.setDisplayPageNum(5);
+		int totalCount = boardService.getTotalCount(cri);
+		pm.setTotalCount(totalCount);
+		model.addAttribute("pageMaker",pm);
 		model.addAttribute("list",boardList);
+		System.out.println();
 		// return "board/list";는 views폴더에 있는 board폴더의 list.jsp파일을 열겠다는 의미
 		return "board/list";
 	}
