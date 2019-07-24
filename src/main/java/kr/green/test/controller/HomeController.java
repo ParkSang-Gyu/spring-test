@@ -1,16 +1,20 @@
 package kr.green.test.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.green.test.service.MemberService;
 import kr.green.test.vo.MemberVO;
@@ -81,5 +85,19 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			return "redirect:/";
 		else
 			return "redirect:/signup";
+	}
+	@RequestMapping(value ="/dup")
+	@ResponseBody
+	public Map<Object, Object> idcheck(@RequestBody String id){
+
+	    Map<Object, Object> map = new HashMap<Object, Object>();
+	   boolean isMember = memberService.memberConfirm(id);
+	   map.put("isMember",isMember);
+	    return map;
+	}
+	@RequestMapping(value ="/find", method = RequestMethod.GET)
+	public String findGet(MemberVO mVo,String id) {
+		memberService.getMember(mVo,id);
+		return "member/find";
 	}
 }

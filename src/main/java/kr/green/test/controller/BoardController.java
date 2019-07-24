@@ -38,15 +38,15 @@ private static final Logger logger = LoggerFactory.getLogger(BoardController.cla
 		pm.setTotalCount(totalCount);
 		model.addAttribute("pageMaker",pm);
 		model.addAttribute("list",boardList);
-		System.out.println();
 		// return "board/list";는 views폴더에 있는 board폴더의 list.jsp파일을 열겠다는 의미
 		return "board/list";
 	}
 	@RequestMapping(value="/board/display", method = RequestMethod.GET)
-	public String boardDisplayGET(Model model,Integer num) {
+	public String boardDisplayGET(Model model,Integer num,Criteria cri) {
 		logger.info("게시글 페이지 실행");
 		BoardVO bVo = boardService.getBoard(num);
 		model.addAttribute("board",bVo);
+		model.addAttribute("cri",cri);
 		return "board/display";
 	}
 	@RequestMapping(value = "/board/modify", method = RequestMethod.GET)

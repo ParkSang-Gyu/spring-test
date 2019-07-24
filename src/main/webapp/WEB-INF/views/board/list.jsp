@@ -9,6 +9,8 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('#perPageNum').change(function () {
+				var search = $('input[name=search]').val();
+				var type = $('select[name=type]').val(); 
 				location.href = '<%=request.getContextPath()%>/board/list?perPageNum=' + $(this).val()
 			})
 		})
@@ -77,6 +79,7 @@
 			<button type="submit" class="btn btn-outline-success float-left">검색</button>
 		</form>
 	<a href="<%=request.getContextPath()%>/board/register">
-		<button>글쓰기</button></a>
+		<button>글쓰기</button>
+	</a>
 </body>
 </html>

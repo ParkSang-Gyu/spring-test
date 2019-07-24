@@ -57,4 +57,17 @@ public class MemberServiceImp implements MemberService{
 		memberDao.signup(mVo);
 		return true;
 	}
+	@Override
+	public boolean memberConfirm(String id) {
+		if(memberDao.getMember(id) == null)
+			return false;
+		return true;
+	}
+	
+	@Override
+	public void getMember(MemberVO mVo,String id) {
+		MemberVO oVo = memberDao.getMember(id);
+		if(oVo == null)
+			
+	}
 }

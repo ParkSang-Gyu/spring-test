@@ -43,12 +43,26 @@
 				return true;
 			return false;
 		}
-		
+		// -1 : 중복체크를 해야하는 경우
+		// 0 : 회원가입이 가능한 경우
+		// 1 : 이미 회원이라 회원가입 불가능
+		var confirm = true;
 		$(document).ready(function(){
+			// 아이디 중복검사를 통해 회원가입 가능한 아이드를 입력했더라도 이후에 아이디창을 통해 아이디 값을 바꾼다면
+			// 다시 중복검사를 해야 하기 때문에 isMember값을 -1로 한다.
+			$('input[name=id]').change(function(){
+				isMember == -1;
+			})
 			$('signup').submit(function(){
 				if(!checkLength('#signup input[name=id]',8,13)){
 					alert('아이디는 8~13자리입니다.')
 					return false;
+				}
+				if(isMember == -1){
+					alert('아이디 중복검사를 하세요.')
+					return false;
+				}else if(isMember == 1){
+					alert('이미 가입된 아이디입니다. 다른 아이디를 입력하세요.')
 				}
 				if(!checkLength('#signup input[name=pw]',8,13)){
 					alert('비밀번호는 8~13자리입니다.')
@@ -64,6 +78,28 @@
 				}
 				alert('회원가입에 성공했습니다.')
 				return true;
+			})
+			$('#dup').click(function(){
+				var id = $('input[name=id]').val();
+			    $.ajax({
+			        async:true,
+			        type:'POST',
+			        data:id,
+			        url:"<%=request.getContextPath()%>/dup",
+			        dataType:"json",
+			        contentType:"application/json; charset=UTF-8",
+			        success : function(data){
+			           	if(data.isMember){
+			           		alert('회원가입이 가능한 아이디입니다.')
+			           		confirm = true;
+			           		isMember = 1;
+			           	}else{
+			           		alert('이미 가입된 회원입니다.')
+			           		confirm = false;
+			           		isMember = 0;
+			           	}
+			        }
+			    })
 			})
 		})
 	</script>

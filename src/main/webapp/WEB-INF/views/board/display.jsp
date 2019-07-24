@@ -6,7 +6,7 @@
 <head>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>게시글 상세</title>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/navi.jsp"></jsp:include>
