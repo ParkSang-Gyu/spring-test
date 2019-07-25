@@ -8,6 +8,11 @@
   </select>
   <insert id="signup">
   	insert into member(id,pw,gender,email,name)
-  		values (#{id},#{pw},#{gender},#{email},#{name})
+  		values(#{id},#{pw},#{gender},#{email},#{name})
   </insert>
+  <update id="memberModify">
+  	update member
+  		set pw = #{pw},gender = #{gender},email = #{email}
+  		where id = #{id}
+  </update>
 </mapper>

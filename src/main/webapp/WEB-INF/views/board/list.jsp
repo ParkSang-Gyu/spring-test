@@ -81,5 +81,10 @@
 	<a href="<%=request.getContextPath()%>/board/register">
 		<button>글쓰기</button>
 	</a>
+	<c:if test="${user ne null}">
+		<a href="<%=request.getContextPath()%>/member/modify">
+			<button>회원정보수정</button>
+		</a>
+	</c:if>
 </body>
 </html>

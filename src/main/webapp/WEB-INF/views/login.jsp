@@ -44,6 +44,9 @@
 					<label class="col-4">비밀번호</label>
 					<input name="pw" type="password"class="form-control col-7" placeholder="비밀번호">
 				</div>
+				<div>
+					<a href="<%=request.getContextPath()%>/member/find" class="float-left">비밀번호 찾기</a>
+				</div>
 				<div class="offset-8 col-3 clearfix p-0">
 					<button class="btn btn-primary float-right">로그인</button>
 				</div>

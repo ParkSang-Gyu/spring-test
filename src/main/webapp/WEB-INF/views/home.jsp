@@ -8,7 +8,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/main.css">
-	
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('input[name=id]').focus();
@@ -40,7 +40,7 @@
 	<div>
 		<div class="offset-4 col-4 border border-dark mt-5 clearfix">
 			<h1 class="text-center">로그인</h1>
-			<form method="post" action="<%=request.getContextPath()%>/signin">
+			<form method="post" action="<%=request.getContextPath()%>/login">
 				<div class="row">
 					<label class="col-4">아이디</label>
 					<input name="id" type="text"class="form-control col-7" placeholder="아이디">
@@ -50,7 +50,7 @@
 					<input name="pw" type="password"class="form-control col-7" placeholder="비밀번호">
 				</div>
 				<div>
-					<a href="<%=request.getContextPath()%>/member/findPw" class="float-right">비밀번호 찾기</a>
+					<a href="<%=request.getContextPath()%>/member/find" class="float-left">비밀번호 찾기</a>
 				</div>
 				<div class="offset-8 col-3 clearfix p-0">
 					<button class="btn btn-primary float-right">로그인</button>
