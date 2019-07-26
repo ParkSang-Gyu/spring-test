@@ -47,8 +47,8 @@
 	<interceptors>
 		<interceptor>
 	        <mapping path="/board/*"/>
+	        <mapping path="/member/modify"/>
 	        <beans:ref bean="unauthInterceptor"/>
 		</interceptor>
-	</interceptors>
-	
+	</interceptors>	
 </beans:beans>

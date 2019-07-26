@@ -9,16 +9,16 @@ public interface BoardDAO {
 
 	ArrayList<BoardVO> getBoardList(Criteria cri);
 
+	int getCountBoardList(Criteria cri);
+
 	BoardVO getBoard(Integer num);
 
-	void updateViews(Integer num);
+	void registerBoard(BoardVO bVo);
 
-	void updateBoard(BoardVO tmp);
-
-	void boardRegister(BoardVO bVo);
+	void modifyBoard(BoardVO bVo);
 
 	void deleteBoard(Integer num);
 
-	int getTotalCount(Criteria cri);
+	
 	
 }

@@ -5,14 +5,24 @@ import javax.servlet.http.HttpServletRequest;
 import kr.green.test.vo.MemberVO;
 
 public interface MemberService {
-	public boolean signup(MemberVO mVo);
-	public MemberVO login(MemberVO mVo);
-	public boolean memberModify(MemberVO mVo, String oldPw);
-	public boolean memberConfirm(String id);
-	public String getVal(String id);
-	public boolean checkMember(String id, String email);
-	public String createPw();
-	public void modify(String id, String email, String newPw);
-	public void sendMail(String email, String title, String contents);
+
+	MemberVO signin(String id, String pw);
+
+	void signup(MemberVO mVo);
+
+	boolean isMember(String id);
+
+	String getVal(String string);
+
+	boolean isMember(String id, String email);
+
+	void sendEmail(String title, String contents, String email);
+
+	void modify(String id, String newPw);
+
+	MemberVO modify(MemberVO user, String oldPw);
+
+	boolean updateUserToSession(HttpServletRequest r, MemberVO nUser);
+	
 	
 }

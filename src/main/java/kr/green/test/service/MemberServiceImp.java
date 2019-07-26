@@ -1,6 +1,8 @@
 package kr.green.test.service;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,124 +22,56 @@ public class MemberServiceImp implements MemberService{
 	BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	private JavaMailSender mailSender;
-	
 	@Override
-	public boolean signup(MemberVO mVo) {
-		//예외처리
-		if(mVo == null)
-			return false;
-		mVo.setName("");
-		// 기존에 해당 아이디가 있는지 체크
-		// 있으면 false를 반환하고 종료
-		// 없으면 회원가입 진행
-		if(memberDao.getMember(mVo.getId()) != null)
-			return false;
-		//회원가입창에서 입력받은 암호를 암호화시킴
-		String encodePw = passwordEncoder.encode(mVo.getPw());
-		//회원 정보의 비밀번호를 암호화된 비밀번호로 변경
-		mVo.setPw(encodePw);
-		memberDao.signup(mVo);
-		return true;
-	}
-
-	@Override
-	public MemberVO login(MemberVO mVo) {
-		//예외처리
-		if(mVo == null)
-			return null;
-		// DAO에게 입력한 id(mVo.getId())와 일치하는 회원 정보를 가져오게 시켜서 객체를 만들어 저장
-		MemberVO oVo = memberDao.getMember(mVo.getId());
-		// 저장된 회원정보가 없으면 컨트롤러에게 회원 아니라고 알려주고
-		if(oVo == null)
-			return null;
-		// 있으면 가져온 회원정보 비밀번호(oVo.getPw())와 입력한 비밀번호(mVo.getPw()))를 비교하여
-		if(passwordEncoder.matches(mVo.getPw(),oVo.getPw()))
-			// 같으면(참이면) 컨트롤러에게 회원이라고 알려주고
-			return oVo;
-		// 다르면 아니라고 알려준다
+	public MemberVO signin(String id, String pw) {
+		MemberVO user = memberDao.getMember(id);
+		if(user != null && passwordEncoder.matches(pw, user.getPw())) {
+			return user;
+		}
 		return null;
 	}
-
 	@Override
-	public boolean memberModify(MemberVO mVo, String oldPw) {
-		//예외처리
+	public void signup(MemberVO mVo) {
 		if(mVo == null)
-			return false;
-		MemberVO oVo = memberDao.getMember(mVo.getId());
-		if(oVo == null)
-			return false;
-		if(oVo.getPw().equals(oldPw)) {
-			String encodePw = passwordEncoder.encode(mVo.getPw());
-			mVo.setPw(encodePw);
-			memberDao.memberModify(mVo);
-		}	
-		// if(memberDao.getMember(mVo.getId()).getPw().equals(oldPw){
-		//	memberDao.memberModify(mVo);
-		// }
-		return false;
+			return ;
+		String encPw = passwordEncoder.encode(mVo.getPw());
+		mVo.setPw(encPw);
+		memberDao.signup(mVo);
 	}
-
 	@Override
-	public boolean memberConfirm(String id) {
-		if(memberDao.getMember(id) == null)
+	public boolean isMember(String id) {
+		MemberVO user = memberDao.getMember(id);
+		if(user == null)
 			return false;
-		return true;
-	}
-
-	@Override
-	public String getVal(String id) {
-		String [] arr = id.split("=");
-		if(arr.length == 2)
-			return arr[1];
 		else
-			return "";
+			return true;
 	}
-
 	@Override
-	public boolean checkMember(String id, String email) {
+	public String getVal(String str) {
+		String [] tmpStr = str.split("=");
+		//id=123=123
+		//id&123
+		if(tmpStr.length != 2)
+			return null;
+		//id=123에서 123을 원하는데 id는 0번지에 123은 1번지에 저장되기 때문에
+		//1번지의 값을 리턴
+		return tmpStr[1];
+	}
+	@Override
+	public boolean isMember(String id, String email) {
 		MemberVO user = memberDao.getMember(id);
 		if(user != null && user.getEmail().equals(email))
 			return true;
 		return false;
 	}
-
 	@Override
-	public String createPw() {
-		//문자열에 저장
-		String str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		//비밀번호는 처음에 공백으로 초기화
-		String pw = "";
-		//비밀번호가 8자리이므로 반복문을 8번 반복
-		for(int i=0;i<8;i++) {
-			//정수 변수에 랜덤한 수를 뽑아 저장(0부터  61까지)
-			int r = (int)(Math.random()*62);
-			pw += str.charAt(r);
-		}
-		return pw;
-	}
-
-	@Override
-	public void modify(String id, String email, String newPw) {
-		MemberVO user = memberDao.getMember(id);
-		if(user == null)
-			return ;
-		if(!user.getEmail().equals(email))
-			return ;
-		String encodePw = passwordEncoder.encode(newPw);
-		user.setPw(encodePw);
-		memberDao.memberModify(user);
-		
-	}
-
-	@Override
-	public void sendMail(String email, String title, String contents) {
-		String setfrom = "englandmf11@naver.com";
-
-	    try {
+	public void sendEmail(String title, String contents, String email) {
+		System.out.println(email);
+		try {
 	        MimeMessage message = mailSender.createMimeMessage();
 	        MimeMessageHelper messageHelper 
 	            = new MimeMessageHelper(message, true, "UTF-8");
-
+	        String setfrom ="stajun@gmail.com";
 	        messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
 	        messageHelper.setTo(email);     // 받는사람 이메일
 	        messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
@@ -147,10 +81,44 @@ public class MemberServiceImp implements MemberService{
 	    } catch(Exception e){
 	        System.out.println(e);
 	    }
-		
 	}
-
+	@Override
+	public void modify(String id, String newPw) {
+		MemberVO user = memberDao.getMember(id);
+		if(user == null)
+			return ;
+		String encPw = passwordEncoder.encode(newPw);
+		user.setPw(encPw);
+		memberDao.modify(user);	
+	}
+	@Override
+	public MemberVO modify(MemberVO user, String oldPw) {
+		if(user == null)
+			return null;
+		MemberVO oUser = memberDao.getMember(user.getId());
+		if(!passwordEncoder.matches(oldPw, oUser.getPw()))
+			return null;
+		
+		if(user.getPw().length()==0) {
+			//새 비밀번호가 입력되지 않은 경우 기존비밀번호 정보를 가져와 새비밀번호로 설정한다.
+			user.setPw(oUser.getPw());
+		}else {
+			//새 비밀번호가 입력된 경우 디비에 저장하기 전에 암호화를 해야한다.
+			String encPw = passwordEncoder.encode(user.getPw());
+			user.setPw(encPw);
+		}
+		memberDao.modify(user);
+		return user;
+	}
+	@Override
+	public boolean updateUserToSession(HttpServletRequest r, MemberVO nUser) {
+		if(nUser == null)
+			return false;
+		HttpSession s = r.getSession();
+		s.removeAttribute("user");//이전 회원정보 제거
+		s.setAttribute("user", nUser);//새 회원 정보 추가
+		return true;
+	}
 	
-
 	
 }

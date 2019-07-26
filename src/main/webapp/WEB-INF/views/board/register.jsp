@@ -4,34 +4,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<title>게시글 등록</title>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/navi.jsp"></jsp:include>
-	<form action="<%=request.getContextPath() %>/board/register" method="post">
-		<div class="container-fluid" style="margin-top:20px;"></div>
-		<div class="form-group">
-		  <label>제목</label>
-		  <input type="text" class="form-control" name="title" value="">
-		</div>
-		<div class="form-group">
-		  <label>작성자</label>
-		  <input type="text" class="form-control" name="writer" value="${user.id}" readonly>
-		</div>
-		<div class="form-group">
-		  <label>내용</label>
-		  <textarea rows="10" cols="" class="form-control" name="contents"></textarea>
-		</div>
-		<div class="form-group">
-		  <label>첨부파일</label>
-		  <input type="text" class="form-control" name="file" value="">
-		</div>
-		<a href="<%=request.getContextPath()%>/board/list">
-			<button type="button" class="btn btn-primary">목록</button></a>
-		<a href="<%=request.getContextPath()%>/board/list">
-			<button type="submit" class="btn btn-primary">등록</button></a>
-	</form>
+	<div class="container">
+		<h1 class="mt-5">게시글 등록</h1>
+		<form method="post" action="<%=request.getContextPath()%>/board/register">
+			<div class="form-group">
+			  <label>제목:</label>
+			  <input type="text" class="form-control" name="title" value="">
+			</div>
+			<div class="form-group">
+			  <label>작성자:</label>
+			  <input type="text" class="form-control" name="writer" value="${user.id}">
+			</div>
+			<div class="form-group">
+			  <label>내용:</label>
+			  <textarea rows="5" cols="" class="form-control" name="contents">${board.contents }</textarea>
+			</div>
+			<a href="<%=request.getContextPath()%>/board/list" class="float-left">
+				<button class="btn btn-outline-dark">목록</button>
+			</a>
+			
+			<button class="btn btn-outline-dark float-right">등록 하기</button>
+			
+		</form>
+	</div>
+	
 </body>
 </html>

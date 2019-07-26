@@ -11,20 +11,17 @@ public interface BoardService {
 
 	ArrayList<BoardVO> getBoardList(Criteria cri);
 
+	int getCountBoardList(Criteria cri);
+
 	BoardVO getBoard(Integer num);
 
-	void updateViews(Integer num);
-	// 내 코드
-//	boolean boardModify(BoardVO bVo);
+	void registerBoard(BoardVO bVo);
 
-	void updateBoard(BoardVO bVo, HttpServletRequest request);
+	boolean isWriter(HttpServletRequest r, Integer num);
 
-	boolean boardRegister(BoardVO bVo);
+	void modifyBoard(BoardVO bVo);
 
 	void deleteBoard(Integer num);
 
-	boolean isWriter(Integer num, HttpServletRequest r);
-
-	int getTotalCount(Criteria cri);
 	
 }

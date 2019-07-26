@@ -20,71 +20,46 @@ public class BoardServiceImp implements BoardService{
 
 	@Override
 	public ArrayList<BoardVO> getBoardList(Criteria cri) {
-		
 		return boardDao.getBoardList(cri);
+	}
+
+	@Override
+	public int getCountBoardList(Criteria cri) {
+		return boardDao.getCountBoardList(cri);
 	}
 
 	@Override
 	public BoardVO getBoard(Integer num) {
 		if(num == null || num <= 0)
 			return null;
-		return boardDao.getBoard(num);
-	}
-	@Override
-	public void updateViews(Integer num) {
-		//boardDao.updateViews(num);
-		BoardVO tmp = boardDao.getBoard(num);
-		if(tmp != null) {
-			int oldViews = tmp.getViews();
-			tmp.setViews(oldViews + 1);
-			boardDao.updateBoard(tmp);
-		}
-		
-	}
-//	내 코드
-//	@Override
-//	public boolean boardModify(BoardVO bVo) {
-//		if(bVo == null)
-//			return false;
-//		else boardDao.updateBoard(bVo);
-//		return true;
-//	}
-
-	@Override
-	public void updateBoard(BoardVO bVo, HttpServletRequest request) {
-		MemberVO user = (MemberVO)request.getSession().getAttribute("user");
-		if(user == null || bVo == null)
-			return ;
-		if(bVo.getWriter() != null && bVo.getWriter().equals(user.getId()));
-			boardDao.updateBoard(bVo);
-		return;
+		else
+			return boardDao.getBoard(num);
 	}
 
 	@Override
-	public boolean boardRegister(BoardVO bVo) {
-		boardDao.boardRegister(bVo);
-		return true;
+	public void registerBoard(BoardVO bVo) {
+		boardDao.registerBoard(bVo);	
 	}
 
 	@Override
-	public void deleteBoard(Integer num) {
-		if(num == null || num <= 0) return ;
-		boardDao.deleteBoard(num);
-	}
-
-	@Override
-	public boolean isWriter(Integer num,HttpServletRequest r) {
-		BoardVO board = boardDao.getBoard(num);
+	public boolean isWriter(HttpServletRequest r, Integer num) {
 		MemberVO user = (MemberVO)r.getSession().getAttribute("user");
-		if(board != null && user != null && board.getWriter().equals(user.getId())) {
+		BoardVO board = boardDao.getBoard(num);
+		if(user != null && board != null && user.getId().equals(board.getWriter())) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public int getTotalCount(Criteria cri) {
-		
-		return boardDao.getTotalCount(cri);
+	public void modifyBoard(BoardVO bVo) {
+		boardDao.modifyBoard(bVo);	
 	}
+
+	@Override
+	public void deleteBoard(Integer num) {
+		boardDao.deleteBoard(num);	
+	}
+
+	
 }
